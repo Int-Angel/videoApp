@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 import User from "../models/User.js";
 
-export const signup = async (req, res) => {
+export const signup = async (req, res, next) => {
   const salt = bcrypt.genSaltSync(10);
   const hash = bcrypt.hashSync(req.body.password, salt);
   try {
@@ -10,6 +10,6 @@ export const signup = async (req, res) => {
     await newUser.save();
     res.status(200).send("User created");
   } catch (err) {
-    // TODO - Handle error
+    next(err);
   }
 };
